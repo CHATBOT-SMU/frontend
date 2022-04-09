@@ -1,6 +1,15 @@
 import { StyleSheet, Text, View, Image,TextInput, TouchableOpacity,ScrollView,Keyboard,Pressable } from 'react-native';
 import { useState,useRef, useEffect} from 'react';
+
+
+import { Spring, animated } from 'react-spring'
+import Loading from './components/Loading';
+import Header from './components/Header';
+
+
 import axios from 'axios';
+import Body from './components/Body';
+import Footer from './components/Footer';
 
 const returnCurrentDate = ()=> {
   return new Date().toLocaleDateString('en-us', {month:"short", day:"numeric",hour: "2-digit",minute: '2-digit',hour12: false})
@@ -16,40 +25,41 @@ const messageArray = [
 ]
 
 export default function App() {
-  const scrollViewRef = useRef();
+
   const [messages,setMessages] = useState(messageArray)
-  const [textDesc,onChangeTextDesc] = useState('')
-  const [focus,setFocus] = useState(false)
+  const [focusMessage,setFocusMessage] = useState(false)
+  
   const [keyboardOffset, setKeyboardOffset] = useState(0);
   const [option, setOption] = useState(null)
-  const [choice,setChoice] = useState(null)
+  const [loading,setLoading] = useState(true)
 
   const onKeyboardShow = event => setKeyboardOffset(event.endCoordinates.height);
   const onKeyboardHide = () => setKeyboardOffset(0);
   const keyboardDidShowListener = useRef();
   const keyboardDidHideListener = useRef();
+  
+
 
   
   
-  const MessageHandler = async () => {
-    
+  const MessageHandler = async (message) => {
     setMessages((prev)=>[
       ...prev,
       {
         user: true,
-        text: textDesc,
+        text: message,
         date: returnCurrentDate()
       }
     ])
-    const url = `http://192.168.1.6/api/${option}`
-    await axios.post(url,{"choice": textDesc})
+    const url = `http://127.0.0.1:5000/api/${option}`
+    await axios.post(url,{"choice": message})
           .then(response => {
               console.log(response.data)
               setMessages((prev)=>[
                 ...prev,
                 {
                   user: false,
-                  text: response.data.answer !== null ? response.data.answer : "Sorry I don't have answer for that",
+                  text: response.data.answer !== null ? response.data.answer : "Sorry I don't have an answer for that",
                   date: returnCurrentDate()
                 }
               ])}).catch((err)=>{
@@ -67,77 +77,24 @@ export default function App() {
       keyboardDidHideListener.current.remove();
     };
   }, []);
+
+  useEffect(() => {
+    setTimeout(()=>setLoading(false),3000)
+  }, [])
+  
+ 
   
   return (
-    <View style={styles.container}>
+    loading ? 
+    <Loading/>
+    :
+    <View style={[styles.container, focusMessage && {paddingBottom:0}]}>
       
-      <View style={styles.header}>
-      <Image 
-        source={require('./medtech_logo-f_edited.jpg')}  
-        style={{width: 50, height: 50}} 
-      />
-        <Text style={styles.headerText}>SMU CHATBOT</Text>
-      </View>
+      <Header option = {option} setOption = {setOption} />
 
-      <View style={[styles.main,keyboardOffset !==0 &&{bottom: keyboardOffset-20}]}>
-      <ScrollView 
-        
-        keyboardShouldPersistTaps='handled'
-        keyboardDismissMode="on-drag"
-        showsVerticalScrollIndicator={false}
-        ref={scrollViewRef}
-        onContentSizeChange={() => scrollViewRef.current.scrollToEnd({ animated: true })}
-      >
-        {
-        option == null ? (
-          <View>
-            <Pressable onPress={()=>{setOption("building")}}>
-              <Text style = {styles.optionBox}>Building</Text>
-            </Pressable>
-
-            <Pressable onPress={()=>{setOption("academia")}}>
-              <Text style = {styles.optionBox}>Academia</Text>
-            </Pressable>
-
-            <Pressable onPress={()=>{setOption("finance")}}>
-              <Text style = {styles.optionBox}>Finance</Text>
-            </Pressable>
-          </View>
-        )
-        :
-        messages.map((message)=>{
-         
-         return (<View key={Math.random(100)}>
-           <View key={Math.random(100)} style={[{flex:1},message.user && {alignItems:'flex-end'}]}>
-           <Text style={[styles.mainText,!message.user ? {backgroundColor: '#ECEDEF'} : {backgroundColor: '#363639',color: '#ffff'}]}>{message.text}</Text>
-           <Text style={{fontSize:12, color:'#BCC5D3',marginBottom: 30}}>{message.date}</Text>
-         </View>
-         </View>)
-        })}
-        
-      </ScrollView>
-      </View>
+      <Body option = {option} setOption={setOption} keyboardOffset = {keyboardOffset} messages = {messages}  />
       
-      <View style={[styles.footer,keyboardOffset !==0 &&{bottom: keyboardOffset-20},focus && {borderColor:'#BCC5D3',borderBottomWidth: 1, backgroundColor: 'white'}, option === null && {display: 'none'}]}>
-      <TextInput
-        multiline = {true} 
-        onFocus = {()=>setFocus(true)}
-        onBlur = {()=>setFocus(false)}
-        style={[{fontSize: 18, width: 250}]}
-        onChangeText={onChangeTextDesc}
-        value={textDesc}
-        placeholder="Write your message..."
-        placeholderTextColor='#BCC5D3'
-      />
-
-        <TouchableOpacity display = {false} onPress={()=>{
-          if(textDesc)
-          return MessageHandler()
-        }}
-      >
-          <Image source={require('./icon.jpg')} style = {{width: 30, height: 30}} />
-        </TouchableOpacity>
-      </View>
+      <Footer option = {option}  keyboardOffset = {keyboardOffset} MessageHandler = {MessageHandler} setFocusMessage = {setFocusMessage} />
       
 
     </View>
@@ -147,26 +104,24 @@ export default function App() {
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
+    width: '100%',
     backgroundColor: '#fff',
     height: '100%',
+    paddingBottom: 20
   },
   header : {
-    flex: 1,
+    height: '20%',
     flexDirection: 'row',
     justifyContent: 'center',
     alignItems: 'center',
-    paddingTop: 10,
     backgroundColor:'#fff',
     zIndex: 1
     
   },
   main : {
-    flex: 6,
-    paddingLeft: 10,
-    paddingRight: 10,
-    marginLeft: 10,
-    marginRight: 10,
+    height:'70%',
+    marginLeft: 20,
+    marginRight: 20,
     
   },
   headerText : {
@@ -185,11 +140,11 @@ const styles = StyleSheet.create({
     
   }, 
   footer : {
-    flex: 0.4,
+    height: '10%',
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'space-around',
-    marginBottom: 20,
+    
 
   },
   input : {
@@ -200,11 +155,16 @@ const styles = StyleSheet.create({
     color: 'white',
     paddingTop: 15,
     paddingBottom: 15,
-    
+    overflow: 'hidden',
     backgroundColor:"#363639",
     textAlign: 'center',
     borderRadius: 10,
     marginBottom: 20
+  },
+  loadingText: {
+    color: '#4C5264',
+    fontSize: 35,
+    fontWeight: 'bold'
   }
 });
 
