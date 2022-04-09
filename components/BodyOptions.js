@@ -63,14 +63,15 @@ const BodyOptions = (props) => {
 export default BodyOptions
 const styles = StyleSheet.create({
     optionBox: {
-        fontSize: 25,
+        fontSize: 18,
         color: 'white',
         paddingTop: 15,
         paddingBottom: 15,
         overflow: 'hidden',
-        backgroundColor:"#363639",
+        backgroundColor:"#46e891",
         textAlign: 'center',
-        borderRadius: 10,
-        marginBottom: 20
+        borderRadius: 30,
+        marginBottom: 20,
+        textTransform: 'uppercase'
       },
 })
