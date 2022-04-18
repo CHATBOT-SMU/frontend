@@ -1,4 +1,4 @@
-import { StyleSheet, View, Keyboard } from "react-native";
+import { StyleSheet, View, Keyboard, Switch } from "react-native";
 import { useState, useRef, useEffect } from "react";
 
 import Loading from "./components/Loading";
@@ -18,7 +18,7 @@ const returnCurrentDate = () => {
   });
 };
 
-const messageArray = [
+var messageArray = [
   {
     user: false,
     text: "Hello, how may I help you?",
@@ -33,6 +33,7 @@ export default function App() {
   const [keyboardOffset, setKeyboardOffset] = useState(0);
   const [option, setOption] = useState(null);
   const [loading, setLoading] = useState(true);
+  const [darkModeOn, setDarkModeOn] = useState(false);
 
   const onKeyboardShow = (event) =>
     setKeyboardOffset(event.endCoordinates.height);
@@ -70,6 +71,26 @@ export default function App() {
         console.log(err);
       });
   };
+
+  useEffect(() => {
+    var text = "";
+    if (option === "building") {
+      text = "Bulding Text";
+    } else if (option === "academia") {
+      text = "Academia Text";
+    } else if (option === "finance") {
+      text = "Finance text";
+    }
+
+    messageArray = [
+      {
+        user: false,
+        text: text,
+        date: returnCurrentDate(),
+      },
+    ];
+    setMessages(messageArray);
+  }, [option]);
 
   useEffect(() => {
     keyboardDidShowListener.current = Keyboard.addListener(
