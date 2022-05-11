@@ -50,7 +50,7 @@ export default function App() {
         date: returnCurrentDate(),
       },
     ]);
-    const url = `http://192.168.48.250:19006/api/${option}`;
+    const url = `http://192.168.15.125:19006/api/${option}`;
     setLoadingMsg(true);
     setTimeout(
       await function () {
@@ -141,7 +141,6 @@ export default function App() {
           style={{
             width: 300,
             height: 300,
-
             margin: "auto",
           }}
         />

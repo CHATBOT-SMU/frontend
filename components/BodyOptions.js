@@ -30,6 +30,18 @@ const BodyOptions = (props) => {
 
   return (
     <View>
+    <Text style={{
+      //center text in the middle of the screen
+      textAlign: "center",
+
+      fontSize: 20,
+      fontWeight: "bold",
+      color: "#fff",
+      marginBottom: 50,
+
+    }}>
+      Choose an option
+    </Text>
       <Animated.View style={{ transform: [{ scale: ScaleAnimVar1 }] }}>
         <Pressable
           onPress={() => {

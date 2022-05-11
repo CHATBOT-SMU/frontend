@@ -104,6 +104,7 @@ export default function Loading() {
                 {
                   transform: [{ translateY: SlideTopVar3 }],
                   opacity: FadeInVar3,
+                  
                 },
               ]}
             >
@@ -157,7 +158,7 @@ const styles = StyleSheet.create({
     fontSize: 35,
     fontWeight: "bold",
     color: "white",
-    fontStyle: "italic",
+    // fontStyle: "italic",
   },
   linearGradient: {
     width: "100%",
