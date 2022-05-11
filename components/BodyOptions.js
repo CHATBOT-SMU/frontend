@@ -1,4 +1,11 @@
-import { StyleSheet, Text, View, Pressable, Animated } from "react-native";
+import {
+  StyleSheet,
+  Text,
+  View,
+  Pressable,
+  Animated,
+  Image,
+} from "react-native";
 import { useRef, useEffect } from "react";
 
 const BodyOptions = (props) => {
@@ -30,6 +37,15 @@ const BodyOptions = (props) => {
 
   return (
     <View>
+      <Image
+        source={require("../bot.png")}
+        style={{
+          width: 100,
+          height: 79,
+          alignSelf: "center",
+          marginBottom: 10,
+        }}
+      />
       <Text
         style={{
           //center text in the middle of the screen
