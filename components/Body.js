@@ -14,6 +14,7 @@ const Body = (props) => {
       ]}
     >
       <ScrollView
+        scrollEnabled={props.option == null ? false : true}
         contentContainerStyle={
           props.option == null && {
             width: "100%",
