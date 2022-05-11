@@ -139,9 +139,10 @@ export default function App() {
         <Image
           source={require("./Leaf.png")}
           style={{
-            width: 300,
-            height: 300,
-            margin: "auto",
+            width: 800,
+            height: 800,
+            bottom: -127,
+            left: -110,
           }}
         />
       </View>
