@@ -5,6 +5,7 @@ import {
   Pressable,
   Animated,
   Image,
+  Easing,
 } from "react-native";
 import { useRef, useEffect } from "react";
 
@@ -12,6 +13,17 @@ const BodyOptions = (props) => {
   const ScaleAnimVar1 = useRef(new Animated.Value(0)).current;
   const ScaleAnimVar2 = useRef(new Animated.Value(0)).current;
   const ScaleAnimVar3 = useRef(new Animated.Value(0)).current;
+  const BotLogoVar = useRef(new Animated.Value(0)).current;
+
+  const BotLogoFadeIn = () => {
+    Animated.timing(BotLogoVar, {
+      toValue: 1,
+      duration: 600,
+      easing: Easing.bounce,
+      delay: 100,
+      useNativeDriver: true,
+    }).start();
+  };
 
   const ScaleAnimation = (delay, ScaleAnimVar) => {
     Animated.sequence([
@@ -30,18 +42,20 @@ const BodyOptions = (props) => {
   };
 
   useEffect(() => {
+    BotLogoFadeIn();
     ScaleAnimation(0, ScaleAnimVar1);
     ScaleAnimation(100, ScaleAnimVar2);
     ScaleAnimation(200, ScaleAnimVar3);
-  }, [ScaleAnimVar1, ScaleAnimVar2, ScaleAnimVar3]);
+  }, [ScaleAnimVar1, ScaleAnimVar2, ScaleAnimVar3, BotLogoVar]);
 
   return (
     <View>
-      <Image
+      <Animated.Image
         source={require("../bot.png")}
         style={{
+          transform: [{ scale: BotLogoVar }],
           width: 100,
-          height: 79,
+          height: 115,
           alignSelf: "center",
           marginBottom: 10,
         }}
@@ -51,9 +65,8 @@ const BodyOptions = (props) => {
           //center text in the middle of the screen
           textAlign: "center",
           fontSize: 20,
-          fontWeight: "bold",
           color: "#fff",
-          marginBottom: 30,
+          marginBottom: 80,
         }}
       >
         Choose an option:

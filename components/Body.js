@@ -19,7 +19,8 @@ const Body = (props) => {
           props.option == null && {
             width: "100%",
             height: "100%",
-            justifyContent: "center",
+            justifyContent: "flex-start",
+            marginTop: 0,
           }
         }
         keyboardShouldPersistTaps="handled"
