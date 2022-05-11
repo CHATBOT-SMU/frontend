@@ -38,10 +38,10 @@ const BodyOptions = (props) => {
   return (
     <View>
       <Image
-        source={require("../bot.png")}
+        source={require("../smu-chatbot-logo.png")}
         style={{
           width: 100,
-          height: 79,
+          height: 115,
           alignSelf: "center",
           marginBottom: 10,
         }}
