@@ -1,7 +1,5 @@
 import { View, Text, StyleSheet, Image, Animated } from "react-native";
-import { Spring, animated } from "react-spring";
 import { useState, useRef, useEffect } from "react";
-import { LinearGradient } from "expo-linear-gradient";
 
 export default function Loading() {
   // const FadeInVar = useRef([].fill(new Animated.Value(0))).current;

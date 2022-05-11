@@ -6,7 +6,6 @@ import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
 const Footer = (props) => {
   const [focus, setFocus] = useState(false);
   const [textDesc, onChangeTextDesc] = useState("");
-  // const [size,UpdateSize] = useState(50)
 
   return (
     <View
@@ -28,11 +27,11 @@ const Footer = (props) => {
           props.setFocusMessage(false);
         }}
         style={[
-          { fontSize: 18, width: 250 },
+          { fontSize: 18, width: 250, color: "#ECEDEF" },
           focus && {
             width: "75%",
             borderRadius: 20,
-            backgroundColor: "#ECEDEF",
+            backgroundColor: "#666665",
             height: "70%",
             paddingHorizontal: 10,
           },
@@ -46,6 +45,11 @@ const Footer = (props) => {
 
       <TouchableOpacity
         display={true}
+        style={{
+          justifyContent: "center",
+          alignContent: "center",
+          textAlign: "center",
+        }}
         onPress={() => {
           if (textDesc) {
             props.MessageHandler(textDesc);
@@ -56,7 +60,7 @@ const Footer = (props) => {
         <FontAwesomeIcon
           icon={faCircleArrowRight}
           size={30}
-          color={focus ? "#818182" : "#3b3b3b"}
+          color={focus ? "#ECEDEF" : "#ECEDEF"}
         />
       </TouchableOpacity>
     </View>

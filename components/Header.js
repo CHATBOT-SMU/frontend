@@ -14,16 +14,16 @@ const Header = (props) => {
     <View style={styles.header}>
       {props.option !== null && (
         <TouchableOpacity
-          style={{ position: "absolute", left: 20 }}
+          style={{ position: "absolute", left: 20, width: 50 }}
           onPress={() => {
             props.setOption(null), Keyboard.dismiss();
           }}
         >
-          <FontAwesomeIcon icon={faArrowLeft} size={24} />
+          <FontAwesomeIcon icon={faArrowLeft} size={24} color="#ECEDEF" />
         </TouchableOpacity>
       )}
       <Image
-        source={require("../medtech_logo-f_edited.jpg")}
+        source={require("../MedtechLogo.png")}
         style={{ width: 50, height: 50 }}
       />
       <Text style={styles.headerText}>SMU CHATBOT</Text>
@@ -34,7 +34,7 @@ export default Header;
 const styles = StyleSheet.create({
   headerText: {
     marginLeft: 10,
-    color: "#4C5264",
+    color: "white",
     fontSize: 20,
     fontWeight: "bold",
   },
@@ -43,7 +43,7 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     justifyContent: "center",
     alignItems: "center",
-    backgroundColor: "#fff",
+    backgroundColor: "#2b2b2b",
     zIndex: 1,
   },
 });

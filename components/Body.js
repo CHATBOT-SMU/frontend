@@ -1,7 +1,8 @@
-import { StyleSheet, Text, View, ScrollView } from "react-native";
+import { StyleSheet, Text, View, ScrollView, Dimensions } from "react-native";
 import { useRef } from "react";
 
 import BodyOptions from "./BodyOptions";
+import MessageLoader from "./MessageLoader";
 
 const Body = (props) => {
   const scrollViewRef = useRef();
@@ -31,9 +32,9 @@ const Body = (props) => {
         {props.option == null ? (
           <BodyOptions setOption={props.setOption} />
         ) : (
-          props.messages.map((message) => {
-            return (
-              <View key={Math.random(100)}>
+          <View>
+            {props.messages.map((message) => {
+              return (
                 <View
                   ew
                   key={Math.random(100)}
@@ -46,23 +47,39 @@ const Body = (props) => {
                     style={[
                       styles.mainText,
                       !message.user
-                        ? { backgroundColor: "#ECEDEF" }
-                        : { backgroundColor: "#057999", color: "#ffff" },
+                        ? {
+                            backgroundColor: "#ECEDEF",
+                            alignSelf: "flex-start",
+                          }
+                        : {
+                            backgroundColor: "#057999",
+                            color: "#ffff",
+                            alignSelf: "flex-end",
+                          },
                     ]}
                   >
                     {message.text}
                   </Text>
                   <Text
-                    style={{ fontSize: 12, color: "#BCC5D3", marginBottom: 30 }}
+                    style={{
+                      fontSize: 12,
+                      color: "#BCC5D3",
+                      marginBottom: 15,
+                    }}
                   >
                     {message.date}
                   </Text>
                 </View>
-              </View>
-            );
-          })
+              );
+            })}
+          </View>
         )}
       </ScrollView>
+      {props.loadingMsg && props.option !== null && (
+        <View style={{ position: "relative", bottom: 30, left: 0 }}>
+          <MessageLoader />
+        </View>
+      )}
     </View>
   );
 };
@@ -72,13 +89,13 @@ const styles = StyleSheet.create({
     height: "75%",
     marginLeft: 20,
     marginRight: 20,
+    justifyContent: "space-between",
   },
   mainText: {
     fontSize: 16,
     padding: 15,
     borderRadius: 20,
     marginBottom: 10,
-    maxWidth: "80%",
     overflow: "hidden",
   },
 });
